@@ -32,5 +32,5 @@ jobs:
         run: dotnet pack --configuration Release --no-build --output ./nupkg
 
       - name: Publish to NuGet.org
-        # Authenticates automatically via the active NuGet Trusted Publishing policy (OIDC)
-        run: dotnet nuget push ./nupkg/*.nupkg --source https://api.nuget.org/v3/index.json --skip-duplicate
+        # Uses Trusted Publishing with dummy key placeholder to trigger OIDC auth
+        run: dotnet nuget push ./nupkg/*.nupkg --source https://api.nuget.org/v3/index.json --skip-duplicate --api-key AzureArtifacts

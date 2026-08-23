@@ -222,6 +222,28 @@ public class NotificationController : ControllerBase
 
 ---
 
+## Detailed Setup Walkthrough
+
+For a complete step-by-step tutorial on creating service account keys, `.csproj` setup, configuration, and controller integration, see the [**WALKTHROUGH.md**](WALKTHROUGH.md) guide.
+
+---
+
+## Sample Project & Test Harness
+
+A complete, interactive test runner is included in [`examples/Santa.Firebase.Services.Sample`](examples/Santa.Firebase.Services.Sample/):
+
+- 🎮 **Interactive Console Runner**: Test single push, multicast, promotional banners with images, and topic broadcasts live from your terminal.
+- 💡 **Best Practices**: Demonstrates clean dependency injection, configuration options binding, and safe error handling.
+
+To run the sample:
+```powershell
+cd examples/Santa.Firebase.Services.Sample
+dotnet run
+```
+
+---
+
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
+
