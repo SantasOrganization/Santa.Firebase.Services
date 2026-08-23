@@ -1,7 +1,12 @@
 name: Publish Santa.Firebase.Services to NuGet
 
 on:
-  # Triggers the workflow automatically when you publish a new Release in GitHub
+  # Triggers automatically when you push commits to main branch (e.g. from VS Code)
+  push:
+    branches:
+      - main
+
+  # Triggers when you publish a new Release in GitHub
   release:
     types: [published]
 
@@ -34,5 +39,6 @@ jobs:
         run: dotnet pack --configuration Release --no-build --output ./nupkg
 
       - name: Publish to NuGet.org
-        # Pushes the package to NuGet.org. Notice there is NO --api-key parameter!
+        # Pushes the package to NuGet.org via Trusted Publishing (OIDC)
+        # --skip-duplicate ensures it won't fail if the same version was already pushed
         run: dotnet nuget push ./nupkg/*.nupkg --source https://api.nuget.org/v3/index.json --skip-duplicate
