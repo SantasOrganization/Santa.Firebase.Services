@@ -38,6 +38,18 @@ Install-Package Santa.Firebase.Services
 
 ---
 
+## 🧭 Interactive Guided Setup (Included in Package)
+
+When you install this package, an interactive PowerShell guide `walkthrough.ps1` is automatically delivered to your project!
+
+You can run it directly in your terminal for a step-by-step interactive walkthrough or to launch the live sample test runner:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File ./walkthrough.ps1
+```
+
+---
+
 ## How to Create a Firebase Project & Get Credentials
 
 Follow these steps to set up Firebase and obtain your service account credentials:
@@ -69,48 +81,50 @@ Follow these steps to set up Firebase and obtain your service account credential
    ```
 3. ⚠️ **Security Tip:** Add `firebase-credentials.json` to your `.gitignore` file so you never commit secrets to source control.
 
----
+## Quick Start (Zero-Config 3 Steps)
 
-## Quick Start & Setup
- 
-### 1. Configure `appsettings.json`
-
-Add the `Firebase` configuration section to your project's `appsettings.json`:
-
-```json
-{
-  "Firebase": {
-    "ServiceAccountPath": "firebase-credentials.json",
-    "ProjectId": "your-firebase-project-id"
-  }
-}
+### Step 1: Install Package
+```bash
+dotnet add package Santa.Firebase.Services
 ```
 
----
+### Step 2: Drop `firebase-credentials.json` into Project Root
+Download your service account key from [Firebase Console](https://console.firebase.google.com/) and place `firebase-credentials.json` in your project folder. The library will automatically locate and load it!
 
-### 2. Register in `Program.cs`
-
+### Step 3: Register in `Program.cs` (1 Line!)
 ```csharp
 using Santa.Firebase.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Register Santa.Firebase.Services using appsettings.json
-builder.Services.AddSantaFirebaseServices(options =>
-{
-    builder.Configuration.GetSection("Firebase").Bind(options);
-});
+// ✨ Zero-Configuration: Auto-detects credentials and appsettings
+builder.Services.AddSantaFirebaseServices();
 
 var app = builder.Build();
 ```
 
-Or configure via code directly:
+---
 
+### Optional Custom Configurations
+
+If you prefer custom paths, environment variables, or `appsettings.json`:
+
+#### Option A: `appsettings.json`
+```json
+{
+  "Firebase": {
+    "ServiceAccountPath": "custom/path/firebase-credentials.json",
+    "ProjectId": "your-firebase-project-id"
+  }
+}
+```
+
+#### Option B: Inline Code / Cloud Environment Variables
 ```csharp
 builder.Services.AddSantaFirebaseServices(options =>
 {
-    options.ServiceAccountPath = "firebase-credentials.json";
-    options.ProjectId = "your-firebase-project-id";
+    // Pass raw JSON string (ideal for Azure App Services, AWS Secrets, or Docker env vars)
+    options.ServiceAccountJson = Environment.GetEnvironmentVariable("FIREBASE_CREDENTIALS_JSON");
 });
 ```
 

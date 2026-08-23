@@ -15,7 +15,7 @@ dotnet pack -c Release --output ./nupkg
 ```
 
 This creates the package file:
-📁 `nupkg/Santa.Firebase.Services.1.0.0.nupkg`
+📁 `nupkg/Santa.Firebase.Services.1.0.4.nupkg`
 
 ---
 
@@ -31,10 +31,10 @@ This creates the package file:
 ### Step 3: Upload the `.nupkg` File
 
 1. Click **"Browse"** or drag-and-drop the file from your local folder:
-   - **Path:** `C:\Users\Santa\OneDrive\Desktop\CUBETEN\nuGet\nupkg\Santa.Firebase.Services.1.0.0.nupkg`
+   - **Path:** `C:\Users\Santa\OneDrive\Desktop\CUBETEN\nuGet\nupkg\Santa.Firebase.Services.1.0.4.nupkg`
 2. NuGet.org will inspect and display your package metadata:
    - **Package ID:** `Santa.Firebase.Services`
-   - **Version:** `1.0.0`
+   - **Version:** `1.0.4`
    - **Authors:** `Santa Mayengbam`
    - **Description:** `A lightweight, robust Firebase Cloud Messaging (FCM) push notification wrapper for ASP.NET Core.`
    - **License:** `MIT`

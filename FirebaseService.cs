@@ -34,55 +34,82 @@ public class FirebaseService : IFirebaseService
         _logger = logger;
         var config = options.Value;
 
-        // Initialize Firebase Admin SDK for FCM Push Notifications
-        var credentialsPath = string.IsNullOrWhiteSpace(config.ServiceAccountPath)
-            ? "firebase-credentials.json"
-            : config.ServiceAccountPath;
-
-        string? resolvedPath = null;
-        if (File.Exists(credentialsPath))
-            resolvedPath = credentialsPath;
-        else if (File.Exists(Path.Combine(AppContext.BaseDirectory, credentialsPath)))
-            resolvedPath = Path.Combine(AppContext.BaseDirectory, credentialsPath);
-        else if (File.Exists(Path.Combine(Directory.GetCurrentDirectory(), credentialsPath)))
-            resolvedPath = Path.Combine(Directory.GetCurrentDirectory(), credentialsPath);
-
-        if (FirebaseApp.DefaultInstance == null)
+        if (FirebaseApp.DefaultInstance != null)
         {
-            if (resolvedPath != null && File.Exists(resolvedPath))
+            _isAdminInitialized = true;
+            return;
+        }
+
+        try
+        {
+            GoogleCredential? credential = null;
+            string sourceDescription = "Unknown";
+
+            // 1. Check direct JSON string (e.g. from environment variable, Azure KeyVault, or config)
+            if (!string.IsNullOrWhiteSpace(config.ServiceAccountJson))
             {
-                try
-                {
-                    using var stream = File.OpenRead(resolvedPath);
-                    var appOptions = new AppOptions
-                    {
-                        Credential = GoogleCredential.FromStream(stream)
-                    };
-
-                    if (!string.IsNullOrWhiteSpace(config.ProjectId))
-                    {
-                        appOptions.ProjectId = config.ProjectId;
-                    }
-
-#pragma warning disable CS0618
-                    FirebaseApp.Create(appOptions);
-#pragma warning restore CS0618
-                    _isAdminInitialized = true;
-                    _logger.LogInformation("Firebase Admin SDK initialized successfully from '{Path}' (Project: {ProjectId})", resolvedPath, config.ProjectId ?? "Default");
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex, "Failed to initialize Firebase Admin SDK from '{Path}'", resolvedPath);
-                }
+                credential = GoogleCredential.FromJson(config.ServiceAccountJson);
+                sourceDescription = "Raw JSON String Configuration";
             }
             else
             {
-                _logger.LogWarning("Firebase credentials file '{Path}' not found. Push notifications will run in fallback mock/log mode until credentials are provided.", credentialsPath);
+                // 2. Resolve credentials file path
+                var credentialsPath = string.IsNullOrWhiteSpace(config.ServiceAccountPath)
+                    ? "firebase-credentials.json"
+                    : config.ServiceAccountPath;
+
+                string? resolvedPath = null;
+                var searchPaths = new[]
+                {
+                    credentialsPath,
+                    Path.Combine(AppContext.BaseDirectory, credentialsPath),
+                    Path.Combine(Directory.GetCurrentDirectory(), credentialsPath),
+                    Environment.GetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS")
+                };
+
+                foreach (var path in searchPaths)
+                {
+                    if (!string.IsNullOrWhiteSpace(path) && File.Exists(path))
+                    {
+                        resolvedPath = path;
+                        break;
+                    }
+                }
+
+                if (resolvedPath != null)
+                {
+                    using var stream = File.OpenRead(resolvedPath);
+                    credential = GoogleCredential.FromStream(stream);
+                    sourceDescription = $"File '{resolvedPath}'";
+                }
+            }
+
+            if (credential != null)
+            {
+                var appOptions = new AppOptions
+                {
+                    Credential = credential
+                };
+
+                if (!string.IsNullOrWhiteSpace(config.ProjectId))
+                {
+                    appOptions.ProjectId = config.ProjectId;
+                }
+
+#pragma warning disable CS0618
+                FirebaseApp.Create(appOptions);
+#pragma warning restore CS0618
+                _isAdminInitialized = true;
+                _logger.LogInformation("Firebase Admin SDK initialized successfully via {Source} (Project: {ProjectId})", sourceDescription, config.ProjectId ?? "Auto-Resolved");
+            }
+            else
+            {
+                _logger.LogWarning("Firebase credentials not found (checked 'firebase-credentials.json', appsettings, and env variables). Push notifications will run in fallback simulation mode until credentials are provided.");
             }
         }
-        else
+        catch (Exception ex)
         {
-            _isAdminInitialized = true;
+            _logger.LogError(ex, "Failed to initialize Firebase Admin SDK.");
         }
     }
 

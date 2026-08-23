@@ -16,6 +16,10 @@ This comprehensive guide takes you step-by-step through setting up and using **`
 
 ---
 
+> 💡 **Tip:** This package includes an interactive CLI guide bundled directly into your project upon installation. You can run `powershell -ExecutionPolicy Bypass -File ./walkthrough.ps1` at any time to walk through these steps interactively in your terminal!
+
+---
+
 ## Step 1: Install the NuGet Package
 
 Open your terminal in your ASP.NET Core Web API or Worker Service project and install:
@@ -97,12 +101,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // -------------------------------------------------------------
-// 🔥 Register Santa.Firebase.Services via Options Pattern
+// 🔥 Register Santa.Firebase.Services (Zero-Config Single Line!)
 // -------------------------------------------------------------
-builder.Services.AddSantaFirebaseServices(options =>
-{
-    builder.Configuration.GetSection("Firebase").Bind(options);
-});
+builder.Services.AddSantaFirebaseServices();
 
 var app = builder.Build();
 

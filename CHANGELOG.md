@@ -7,12 +7,41 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.0.4] - 2026-08-23
+
+### Added
+- **Automated MSBuild Build Target**: Added `build/Santa.Firebase.Services.targets` to automatically deploy `walkthrough.ps1` into the consumer's project directory upon building (`dotnet build`).
+- **Tool Packaging**: Packaged `walkthrough.ps1` into the `tools/` and `contentFiles/` directory payloads.
+
+## [1.0.3] - 2026-08-23
+
+### Added
+- Zero-config single-line registration with automatic credentials resolution.
+- Streamlined 5-step onboarding workflow in interactive CLI guide.
+- Added raw JSON credentials support (`ServiceAccountJson`) and environment variable lookup (`GOOGLE_APPLICATION_CREDENTIALS`).
+
+## [1.0.2] - 2026-08-23
+
+### Added
+- **Zero-Config 1-Liner Registration**: Added parameterless `builder.Services.AddSantaFirebaseServices()` which auto-discovers configuration and credentials.
+- **Smart Multi-Source Credentials Resolution**: Automatically finds `firebase-credentials.json` in project root or output directories, reads from `GOOGLE_APPLICATION_CREDENTIALS`, or supports raw `ServiceAccountJson` strings.
+- **Streamlined 5-Step Onboarding**: Updated interactive `walkthrough.ps1` and guides for minimal developer setup.
+- **Bundled Interactive Walkthrough**: Included `walkthrough.ps1` as package `contentFiles`.
+
+### Fixed
+- Fixed packaging warnings for consumer-facing PowerShell scripts (`NU5110`, `NU5111`).
+- Enhanced markdown guides across the project.
+
 ## [1.0.1] - 2026-08-23
+ 
+### Added
+- **Bundled Interactive Walkthrough**: Included `walkthrough.ps1` as package `contentFiles` so developers get an interactive step-by-step setup CLI right inside their project.
+- **Comprehensive Guides**: Added detailed [WALKTHROUGH.md](WALKTHROUGH.md) and interactive sample console harness.
 
 ### Fixed & Improved
-- Excluded examples project from package compilation.
+- Excluded examples project from package compilation to reduce package footprint.
 - Enhanced configuration options binding and standalone testing harness support.
-- Added comprehensive `WALKTHROUGH.md` tutorial for ASP.NET Core integrations.
+- Configured clean build output suppression for packaging scripts.
 
 ## [1.0.0] - 2026-08-23
 

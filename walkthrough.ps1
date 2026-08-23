@@ -12,7 +12,7 @@ function Show-Header {
     Write-Host "  |       SANTA.FIREBASE.SERVICES - PUSH NOTIFICATION SETUP GUIDE        |" -ForegroundColor Cyan
     Write-Host "  +======================================================================+" -ForegroundColor DarkCyan
     Write-Host "   Package: " -NoNewline -ForegroundColor Gray
-    Write-Host "Santa.Firebase.Services (v1.0.1)" -ForegroundColor Green -NoNewline
+    Write-Host "Santa.Firebase.Services (v1.0.4)" -ForegroundColor Green -NoNewline
     Write-Host "  |  Platform: " -NoNewline -ForegroundColor Gray
     Write-Host "ASP.NET Core (.NET 8/9)" -ForegroundColor Yellow
     Write-Host "  +----------------------------------------------------------------------+" -ForegroundColor DarkCyan
@@ -22,7 +22,7 @@ function Show-Header {
 function Show-Step1 {
     Show-Header
     Write-Host "  ========================================================================" -ForegroundColor DarkYellow
-    Write-Host "   STEP 1 OF 7 : INSTALL THE NUGET PACKAGE" -ForegroundColor Yellow
+    Write-Host "   STEP 1 OF 5 : INSTALL THE NUGET PACKAGE" -ForegroundColor Yellow
     Write-Host "  ========================================================================" -ForegroundColor DarkYellow
     Write-Host ""
     Write-Host "  Add the package to your ASP.NET Core project:" -ForegroundColor White
@@ -33,102 +33,48 @@ function Show-Step1 {
     Write-Host "  [ Package Manager Console ]" -ForegroundColor DarkCyan
     Write-Host "    Install-Package Santa.Firebase.Services" -ForegroundColor Green
     Write-Host ""
-    Write-Host "  [ PackageReference in .csproj ]" -ForegroundColor DarkCyan
-    Write-Host "    <PackageReference Include=`"Santa.Firebase.Services`" Version=`"1.0.0`" />" -ForegroundColor Gray
-    Write-Host ""
 }
 
 function Show-Step2 {
     Show-Header
     Write-Host "  ========================================================================" -ForegroundColor DarkYellow
-    Write-Host "   STEP 2 OF 7 : GET FIREBASE SERVICE ACCOUNT CREDENTIALS" -ForegroundColor Yellow
+    Write-Host "   STEP 2 OF 5 : DROP FIREBASE CREDENTIALS JSON IN YOUR PROJECT" -ForegroundColor Yellow
     Write-Host "  ========================================================================" -ForegroundColor DarkYellow
     Write-Host ""
-    Write-Host "  1. Open Firebase Console : " -NoNewline -ForegroundColor White
-    Write-Host "https://console.firebase.google.com/" -ForegroundColor Cyan
-    Write-Host "  2. Select your Firebase Project (or click 'Add project')." -ForegroundColor White
-    Write-Host "  3. Click Settings (Gear icon) > " -NoNewline -ForegroundColor White
-    Write-Host "Project settings" -ForegroundColor Yellow
-    Write-Host "  4. Click on the " -NoNewline -ForegroundColor White
-    Write-Host "'Service accounts'" -ForegroundColor Yellow -NoNewline
-    Write-Host " tab." -ForegroundColor White
-    Write-Host "  5. Click " -NoNewline -ForegroundColor White
-    Write-Host "'Generate new private key'" -ForegroundColor Yellow -NoNewline
-    Write-Host " -> click 'Generate key'." -ForegroundColor White
-    Write-Host "  6. Rename downloaded JSON file to: " -NoNewline -ForegroundColor White
-    Write-Host "firebase-credentials.json" -ForegroundColor Green
+    Write-Host "  1. Download private key from Firebase Console -> Project Settings -> Service Accounts." -ForegroundColor White
+    Write-Host "  2. Save it as " -NoNewline -ForegroundColor White
+    Write-Host "'firebase-credentials.json'" -ForegroundColor Green -NoNewline
+    Write-Host " in your project root." -ForegroundColor White
+    Write-Host ""
+    Write-Host "  (*) Zero-Config Auto Discovery:" -ForegroundColor DarkCyan
+    Write-Host "      Santa.Firebase.Services automatically detects 'firebase-credentials.json'!" -ForegroundColor Gray
+    Write-Host "      (No .csproj edits or appsettings.json entries strictly required)." -ForegroundColor Gray
     Write-Host ""
 }
 
 function Show-Step3 {
     Show-Header
     Write-Host "  ========================================================================" -ForegroundColor DarkYellow
-    Write-Host "   STEP 3 OF 7 : ADD CREDENTIALS TO YOUR PROJECT" -ForegroundColor Yellow
+    Write-Host "   STEP 3 OF 5 : ADD ONE LINE IN PROGRAM.CS" -ForegroundColor Yellow
     Write-Host "  ========================================================================" -ForegroundColor DarkYellow
     Write-Host ""
-    Write-Host "  1. Copy " -NoNewline -ForegroundColor White
-    Write-Host "'firebase-credentials.json'" -ForegroundColor Green -NoNewline
-    Write-Host " into your project root (next to Program.cs)." -ForegroundColor White
-    Write-Host "  2. Configure your " -NoNewline -ForegroundColor White
-    Write-Host ".csproj" -ForegroundColor Yellow -NoNewline
-    Write-Host " to copy the credentials file to output on build:" -ForegroundColor White
+    Write-Host "  In your Program.cs, register Santa.Firebase.Services with just ONE line:" -ForegroundColor White
     Write-Host ""
-    Write-Host "    <ItemGroup>" -ForegroundColor DarkGray
-    Write-Host "      <None Update=`"firebase-credentials.json`">" -ForegroundColor DarkCyan
-    Write-Host "        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>" -ForegroundColor Cyan
-    Write-Host "      </None>" -ForegroundColor DarkCyan
-    Write-Host "    </ItemGroup>" -ForegroundColor DarkGray
+    Write-Host "    using Santa.Firebase.Services;" -ForegroundColor Green
     Write-Host ""
-    Write-Host "  [!] SECURITY TIP: " -NoNewline -ForegroundColor Magenta
-    Write-Host "Add 'firebase-credentials.json' to your .gitignore!" -ForegroundColor Gray
+    Write-Host "    var builder = WebApplication.CreateBuilder(args);" -ForegroundColor White
+    Write-Host ""
+    Write-Host "    // Zero-Config Single Line Registration" -ForegroundColor DarkGray
+    Write-Host "    builder.Services.AddSantaFirebaseServices();" -ForegroundColor Green
+    Write-Host ""
+    Write-Host "    var app = builder.Build();" -ForegroundColor White
     Write-Host ""
 }
 
 function Show-Step4 {
     Show-Header
     Write-Host "  ========================================================================" -ForegroundColor DarkYellow
-    Write-Host "   STEP 4 OF 7 : CONFIGURE APPSETTINGS.JSON" -ForegroundColor Yellow
-    Write-Host "  ========================================================================" -ForegroundColor DarkYellow
-    Write-Host ""
-    Write-Host "  Add the " -NoNewline -ForegroundColor White
-    Write-Host "'Firebase'" -ForegroundColor Green -NoNewline
-    Write-Host " configuration section to your appsettings.json:" -ForegroundColor White
-    Write-Host ""
-    Write-Host "  {" -ForegroundColor DarkGray
-    Write-Host "    `"Firebase`": {" -ForegroundColor DarkCyan
-    Write-Host "      `"ServiceAccountPath`": `"firebase-credentials.json`"," -ForegroundColor Cyan
-    Write-Host "      `"ProjectId`": `"your-firebase-project-id`"" -ForegroundColor Cyan
-    Write-Host "    }" -ForegroundColor DarkCyan
-    Write-Host "  }" -ForegroundColor DarkGray
-    Write-Host ""
-}
-
-function Show-Step5 {
-    Show-Header
-    Write-Host "  ========================================================================" -ForegroundColor DarkYellow
-    Write-Host "   STEP 5 OF 7 : REGISTER SERVICE IN PROGRAM.CS" -ForegroundColor Yellow
-    Write-Host "  ========================================================================" -ForegroundColor DarkYellow
-    Write-Host ""
-    Write-Host "  In your Program.cs, register Santa.Firebase.Services via Dependency Injection:" -ForegroundColor White
-    Write-Host ""
-    Write-Host "    using Santa.Firebase.Services;" -ForegroundColor Green
-    Write-Host ""
-    Write-Host "    var builder = WebApplication.CreateBuilder(args);" -ForegroundColor White
-    Write-Host ""
-    Write-Host "    // Register Firebase Notification Service as Singleton" -ForegroundColor DarkGray
-    Write-Host "    builder.Services.AddSantaFirebaseServices(options =>" -ForegroundColor Cyan
-    Write-Host "    {" -ForegroundColor Cyan
-    Write-Host "        builder.Configuration.GetSection(`"Firebase`").Bind(options);" -ForegroundColor White
-    Write-Host "    });" -ForegroundColor Cyan
-    Write-Host ""
-    Write-Host "    var app = builder.Build();" -ForegroundColor White
-    Write-Host ""
-}
-
-function Show-Step6 {
-    Show-Header
-    Write-Host "  ========================================================================" -ForegroundColor DarkYellow
-    Write-Host "   STEP 6 OF 7 : INJECT AND SEND NOTIFICATIONS IN CONTROLLERS" -ForegroundColor Yellow
+    Write-Host "   STEP 4 OF 5 : INJECT & SEND NOTIFICATIONS IN CONTROLLERS" -ForegroundColor Yellow
     Write-Host "  ========================================================================" -ForegroundColor DarkYellow
     Write-Host ""
     Write-Host "  Inject IFirebaseService into your Controller or Endpoint:" -ForegroundColor White
@@ -154,10 +100,10 @@ function Show-Step6 {
     Write-Host ""
 }
 
-function Show-Step7 {
+function Show-Step5 {
     Show-Header
     Write-Host "  ========================================================================" -ForegroundColor DarkYellow
-    Write-Host "   STEP 7 OF 7 : CODE EXAMPLES FOR ALL NOTIFICATION TYPES" -ForegroundColor Yellow
+    Write-Host "   STEP 5 OF 5 : CODE EXAMPLES FOR ALL NOTIFICATION TYPES" -ForegroundColor Yellow
     Write-Host "  ========================================================================" -ForegroundColor DarkYellow
     Write-Host ""
     Write-Host "  [1] Single Device Notification" -ForegroundColor DarkCyan
@@ -179,7 +125,7 @@ function Show-Step7 {
 }
 
 function Run-StepByStepGuide {
-    $steps = @("Show-Step1", "Show-Step2", "Show-Step3", "Show-Step4", "Show-Step5", "Show-Step6", "Show-Step7")
+    $steps = @("Show-Step1", "Show-Step2", "Show-Step3", "Show-Step4", "Show-Step5")
     $i = 0
 
     while ($i -lt $steps.Length) {
@@ -225,21 +171,19 @@ while ($isRunning) {
     Show-Header
     Write-Host "  Select a Walkthrough Option:" -ForegroundColor White
     Write-Host ""
-    Write-Host "   [1] " -NoNewline -ForegroundColor Green;  Write-Host "Start Complete Step-by-Step Guided Setup (Steps 1 -> 7)" -ForegroundColor White
+    Write-Host "   [1] " -NoNewline -ForegroundColor Green;  Write-Host "Start Complete Step-by-Step Guided Setup (Steps 1 -> 5)" -ForegroundColor White
     Write-Host "   ----------------------------------------------------------------------" -ForegroundColor DarkGray
     Write-Host "   [2] " -NoNewline -ForegroundColor Yellow; Write-Host "Jump to Step 1: Install Package" -ForegroundColor Gray
-    Write-Host "   [3] " -NoNewline -ForegroundColor Yellow; Write-Host "Jump to Step 2: Get Firebase Credentials JSON" -ForegroundColor Gray
-    Write-Host "   [4] " -NoNewline -ForegroundColor Yellow; Write-Host "Jump to Step 3: Add Credentials to .csproj" -ForegroundColor Gray
-    Write-Host "   [5] " -NoNewline -ForegroundColor Yellow; Write-Host "Jump to Step 4: Configure appsettings.json" -ForegroundColor Gray
-    Write-Host "   [6] " -NoNewline -ForegroundColor Yellow; Write-Host "Jump to Step 5: Register in Program.cs" -ForegroundColor Gray
-    Write-Host "   [7] " -NoNewline -ForegroundColor Yellow; Write-Host "Jump to Step 6: Inject in Controllers" -ForegroundColor Gray
-    Write-Host "   [8] " -NoNewline -ForegroundColor Yellow; Write-Host "Jump to Step 7: Push Notification Code Examples" -ForegroundColor Gray
+    Write-Host "   [3] " -NoNewline -ForegroundColor Yellow; Write-Host "Jump to Step 2: Drop Credentials JSON" -ForegroundColor Gray
+    Write-Host "   [4] " -NoNewline -ForegroundColor Yellow; Write-Host "Jump to Step 3: Add One Line in Program.cs" -ForegroundColor Gray
+    Write-Host "   [5] " -NoNewline -ForegroundColor Yellow; Write-Host "Jump to Step 4: Inject in Controllers" -ForegroundColor Gray
+    Write-Host "   [6] " -NoNewline -ForegroundColor Yellow; Write-Host "Jump to Step 5: Push Notification Code Examples" -ForegroundColor Gray
     Write-Host "   ----------------------------------------------------------------------" -ForegroundColor DarkGray
-    Write-Host "   [9] " -NoNewline -ForegroundColor Cyan;   Write-Host "Run Live Interactive Test Runner (Sample App)" -ForegroundColor White
+    Write-Host "   [7] " -NoNewline -ForegroundColor Cyan;   Write-Host "Run Live Interactive Test Runner (Sample App)" -ForegroundColor White
     Write-Host "   [0] " -NoNewline -ForegroundColor Red;    Write-Host "Exit Walkthrough" -ForegroundColor Gray
     Write-Host ""
 
-    $selection = Read-Host "  Enter your choice (0-9)"
+    $selection = Read-Host "  Enter your choice (0-7)"
 
     if ($selection -eq "0") {
         Write-Host "`n  Happy coding with Santa.Firebase.Services!`n" -ForegroundColor Cyan
@@ -254,9 +198,7 @@ while ($isRunning) {
         "4" { Show-Step3; Read-Host "  Press Enter to return to menu..." }
         "5" { Show-Step4; Read-Host "  Press Enter to return to menu..." }
         "6" { Show-Step5; Read-Host "  Press Enter to return to menu..." }
-        "7" { Show-Step6; Read-Host "  Press Enter to return to menu..." }
-        "8" { Show-Step7; Read-Host "  Press Enter to return to menu..." }
-        "9" { Run-LiveSample; Read-Host "  Press Enter to return to menu..." }
-        default { Write-Host "  Invalid choice. Please choose 0-9." -ForegroundColor Red; Start-Sleep -Seconds 1 }
+        "7" { Run-LiveSample; Read-Host "  Press Enter to return to menu..." }
+        default { Write-Host "  Invalid choice. Please choose 0-7." -ForegroundColor Red; Start-Sleep -Seconds 1 }
     }
 }

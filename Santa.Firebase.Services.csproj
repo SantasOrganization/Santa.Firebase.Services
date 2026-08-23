@@ -7,7 +7,7 @@
     
     <!-- NuGet Metadata -->
     <PackageId>Santa.Firebase.Services</PackageId>
-    <Version>1.0.1</Version>
+    <Version>1.0.4</Version>
     <Authors>Santa Mayengbam</Authors>
     <Description>A lightweight, robust Firebase Cloud Messaging (FCM) push notification wrapper for ASP.NET Core.</Description>
     <PackageTags>firebase;fcm;push-notifications;messaging;aspnetcore</PackageTags>
@@ -16,6 +16,9 @@
     <RepositoryUrl>https://github.com/SantasOrganization/Santa.Firebase.Services</RepositoryUrl>
     <PackageProjectUrl>https://github.com/SantasOrganization/Santa.Firebase.Services</PackageProjectUrl>
     <RepositoryType>git</RepositoryType>
+    
+    <!-- Suppress NuGet script execution warnings since walkthrough.ps1 is meant to be executed manually by consumer -->
+    <NoWarn>$(NoWarn);NU5110;NU5111</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
@@ -29,6 +32,9 @@
     <None Include="README.md" Pack="true" PackagePath="\" />
     <None Include="CHANGELOG.md" Pack="true" PackagePath="\" />
     <None Include="LICENSE" Pack="true" PackagePath="\" />
+    <None Include="build\Santa.Firebase.Services.targets" Pack="true" PackagePath="build\Santa.Firebase.Services.targets" />
+    <None Include="walkthrough.ps1" Pack="true" PackagePath="tools\walkthrough.ps1" />
+    <Content Include="walkthrough.ps1" Pack="true" PackagePath="contentFiles\any\any\walkthrough.ps1;content\walkthrough.ps1" CopyToOutputDirectory="PreserveNewest" PackageCopyToOutput="true" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,0 +1,7 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Target Name="CopySantaWalkthroughScript" BeforeTargets="BeforeBuild" Condition="!Exists('$(MSBuildProjectDirectory)\walkthrough.ps1')">
+    <Copy SourceFiles="$(MSBuildThisFileDirectory)..\tools\walkthrough.ps1" 
+          DestinationFiles="$(MSBuildProjectDirectory)\walkthrough.ps1" 
+          SkipUnchangedFiles="true" />
+  </Target>
+</Project>

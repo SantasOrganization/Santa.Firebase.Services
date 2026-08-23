@@ -9,7 +9,12 @@ public class FirebaseServiceOptions
     public string ServiceAccountPath { get; set; } = "firebase-credentials.json";
 
     /// <summary>
-    /// Optional Firebase Project ID.
+    /// Optional raw JSON content of the service account key (useful for cloud/env variables).
+    /// </summary>
+    public string? ServiceAccountJson { get; set; }
+
+    /// <summary>
+    /// Optional Firebase Project ID. If omitted, it is automatically resolved from credentials.
     /// </summary>
     public string? ProjectId { get; set; }
 }
