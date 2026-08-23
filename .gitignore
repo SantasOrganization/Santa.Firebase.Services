@@ -1,0 +1,28 @@
+## Build results
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+## NuGet Packages
+*.nupkg
+*.snupkg
+nupkg/
+
+## Visual Studio / VS Code
+.vs/
+.vscode/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+## OS Generated
+.DS_Store
+Thumbs.db
+desktop.ini
+
+## Secrets
+firebase-credentials.json
+*.p12
+*.key
