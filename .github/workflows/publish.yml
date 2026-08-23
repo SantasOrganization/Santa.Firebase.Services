@@ -1,23 +1,18 @@
 name: Publish Santa.Firebase.Services to NuGet
 
 on:
-  # Triggers automatically when you push commits to main branch (e.g. from VS Code)
   push:
     branches:
       - main
-
-  # Triggers when you publish a new Release in GitHub
   release:
     types: [published]
-
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 jobs:
   publish:
     runs-on: ubuntu-latest
 
-    # These permissions are strictly required for NuGet Trusted Publishing (OIDC)
+    # Required for NuGet Trusted Publishing (OIDC)
     permissions:
       id-token: write
       contents: read
@@ -35,10 +30,8 @@ jobs:
         run: dotnet build --configuration Release
 
       - name: Pack project
-        # Packs the library and outputs the .nupkg file into a specific folder
         run: dotnet pack --configuration Release --no-build --output ./nupkg
 
       - name: Publish to NuGet.org
-        # Pushes the package to NuGet.org via Trusted Publishing (OIDC)
-        # --skip-duplicate ensures it won't fail if the same version was already pushed
+        # Uses NuGet Trusted Publishing (OIDC) authentication
         run: dotnet nuget push ./nupkg/*.nupkg --source https://api.nuget.org/v3/index.json --skip-duplicate
