@@ -12,7 +12,7 @@ function Show-Header {
     Write-Host "  |       SANTA.FIREBASE.SERVICES - PUSH NOTIFICATION SETUP GUIDE        |" -ForegroundColor Cyan
     Write-Host "  +======================================================================+" -ForegroundColor DarkCyan
     Write-Host "   Package: " -NoNewline -ForegroundColor Gray
-    Write-Host "Santa.Firebase.Services (v1.0.0)" -ForegroundColor Green -NoNewline
+    Write-Host "Santa.Firebase.Services (v1.0.1)" -ForegroundColor Green -NoNewline
     Write-Host "  |  Platform: " -NoNewline -ForegroundColor Gray
     Write-Host "ASP.NET Core (.NET 8/9)" -ForegroundColor Yellow
     Write-Host "  +----------------------------------------------------------------------+" -ForegroundColor DarkCyan
